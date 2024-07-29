@@ -12,7 +12,7 @@ class BaseResourceService
     /**
      * Base resource repository instance.
      *
-     * @var BaseResourceRepositoryInterface
+     * @var \App\Repositories\Interfaces\BaseResourceRepositoryInterface
      */
     protected BaseResourceRepositoryInterface $repository;
 
@@ -26,7 +26,7 @@ class BaseResourceService
     /**
      * Create a new controller instance.
      *
-     * @param BaseResourceRepositoryInterface $repository
+     * @param \App\Repositories\Interfaces\BaseResourceRepositoryInterface $repository
      */
     public function __construct(BaseResourceRepositoryInterface $repository)
     {
