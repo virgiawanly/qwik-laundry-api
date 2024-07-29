@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255)->nullable()->index('c_n');
             $table->string('slug')->nullable()->index('c_s');
-            $table->boolean('is_active')->nullable();
+            $table->boolean('is_active')->nullable()->default(1);
             $table->foreignId('owner_id')->nullable()->index('c_oi');
             $table->timestamps();
             $table->softDeletes();

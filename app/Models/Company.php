@@ -25,6 +25,8 @@ class Company extends BaseModel
      */
     protected $fillable = [
         'name',
+        'slug',
+        'is_active',
         'owner_id',
     ];
 
