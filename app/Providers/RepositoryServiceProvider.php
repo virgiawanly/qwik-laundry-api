@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Providers;
+
+use App\Repositories\CompanyRepository;
+use App\Repositories\Interfaces\CompanyRepositoryInterface;
+use App\Repositories\Interfaces\OutletRepositoryInterface;
+use App\Repositories\OutletRepository;
+use App\Services\CompanyService;
+use App\Services\OutletService;
+use Illuminate\Support\ServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->app->bind(CompanyRepositoryInterface::class, CompanyRepository::class);
+        $this->app->bind(CompanyService::class, function ($app) {
+            return new CompanyService($app->make(CompanyRepositoryInterface::class));
+        });
+
+        $this->app->bind(OutletRepositoryInterface::class, OutletRepository::class);
+        $this->app->bind(OutletService::class, function ($app) {
+            return new OutletService($app->make(OutletRepositoryInterface::class));
+        });
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+}
