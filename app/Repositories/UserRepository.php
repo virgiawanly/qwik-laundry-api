@@ -16,4 +16,15 @@ class UserRepository extends BaseResourceRepository implements UserRepositoryInt
     {
         $this->model = new User();
     }
+
+    /**
+     * Find user by email.
+     *
+     * @param  string $email
+     * @return \App\Models\User|null
+     */
+    public function findUserByEmail(string $email): ?User
+    {
+        return $this->model->where('email', $email)->first();
+    }
 }
