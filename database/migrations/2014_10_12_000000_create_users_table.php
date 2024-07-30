@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->nullable()->index('u_e');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('role')->nullable()->index('u_r');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
