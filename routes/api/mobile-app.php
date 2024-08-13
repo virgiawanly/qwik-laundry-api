@@ -4,6 +4,8 @@ use App\Http\Controllers\MobileApp\Auth\LoginController;
 use App\Http\Controllers\MobileApp\Auth\RegistrationController;
 use App\Http\Controllers\MobileApp\Auth\UserController;
 use App\Http\Controllers\MobileApp\Customer\CustomerController;
+use App\Http\Controllers\MobileApp\Product\ProductController;
+use App\Http\Controllers\MobileApp\ProductType\ProductTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -19,5 +21,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('access-outlet')->group(function () {
         Route::apiResource('customers', CustomerController::class);
+
+        Route::apiResource('product-types', ProductTypeController::class);
+
+        Route::apiResource('products', ProductController::class);
     });
 });

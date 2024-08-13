@@ -28,15 +28,16 @@ interface BaseResourceRepositoryInterface
     /**
      * Get a resource by id.
      *
-     * @param int $id
+     * @param  int $id
+     * @param  array $relations
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function find(int $id): Model;
+    public function find(int $id, array $relations = []): Model;
 
     /**
      * Create a new resource.
      *
-     * @param array $data
+     * @param  array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function save(array $data): Model;
@@ -44,8 +45,8 @@ interface BaseResourceRepositoryInterface
     /**
      * Update a resource.
      *
-     * @param int $id
-     * @param array $data
+     * @param  int $id
+     * @param  array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function update(int $id, array $data): Model;
@@ -53,7 +54,7 @@ interface BaseResourceRepositoryInterface
     /**
      * Delete a resource.
      *
-     * @param int $id
+     * @param  int $id
      * @return bool
      */
     public function delete(int $id): bool;

@@ -1,37 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\MobileApp\Customer;
+namespace App\Http\Controllers\MobileApp\ProductType;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\BaseResourceController;
-use App\Http\Requests\MobileApp\Customer\CreateCustomerRequest;
-use App\Http\Requests\MobileApp\Customer\UpdateCustomerRequest;
-use App\Services\CustomerService;
+use App\Http\Requests\MobileApp\ProductType\CreateProductTypeRequest;
+use App\Http\Requests\MobileApp\ProductType\UpdateProductTypeRequest;
+use App\Services\ProductTypeService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CustomerController extends BaseResourceController
+class ProductTypeController extends BaseResourceController
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(protected CustomerService $customerService)
+    public function __construct(protected ProductTypeService $productTypeService)
     {
-        parent::__construct($customerService->repository());
+        parent::__construct($productTypeService->repository());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\MobileApp\Customer\CreateCustomerRequest  $request
+     * @param  \App\Http\Requests\MobileApp\ProductType\CreateProductTypeRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateCustomerRequest $request)
+    public function store(CreateProductTypeRequest $request)
     {
         try {
-            $result = $this->customerService->save($request->validated());
+            $result = $this->productTypeService->save($request->validated());
             return ResponseHelper::success(trans('messages.successfully_created'), $result, 201);
         } catch (Exception $e) {
             return ResponseHelper::internalServerError($e->getMessage(), $e);
@@ -41,14 +41,14 @@ class CustomerController extends BaseResourceController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\MobileApp\Customer\UpdateCustomerRequest  $request
+     * @param  \App\Http\Requests\MobileApp\ProductType\UpdateProductTypeRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateCustomerRequest $request, int $id)
+    public function update(UpdateProductTypeRequest $request, int $id)
     {
         try {
-            $result = $this->customerService->patch($id, $request->validated());
+            $result = $this->productTypeService->patch($id, $request->validated());
             return ResponseHelper::success(trans('messages.successfully_updated'), $result, 200);
         } catch (ModelNotFoundException $e) {
             return ResponseHelper::notFound(trans('messages.resource_not_found'), $e);
