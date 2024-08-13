@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class);
     }
+
+    /**
+     * Get the outlet of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function outlet()
+    {
+        return $this->belongsTo(Outlet::class);
+    }
 }

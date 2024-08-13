@@ -9,11 +9,11 @@ class OutletService extends BaseResourceService
     /**
      * Create a new service instance.
      *
-     * @param  \App\Repositories\Interfaces\OutletRepositoryInterface  $repository
+     * @param  \App\Repositories\Interfaces\OutletRepositoryInterface  $outletRepository
      * @return void
      */
-    public function __construct(protected OutletRepositoryInterface $repository)
+    public function __construct(protected OutletRepositoryInterface $outletRepository)
     {
-        parent::__construct($repository);
+        parent::__construct($outletRepository);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Company;
+use App\Models\Outlet;
 use App\Models\User;
 use App\Repositories\Interfaces\CompanyRepositoryInterface;
 use App\Repositories\Interfaces\OutletRepositoryInterface;
@@ -30,6 +31,9 @@ class RegistrationService
         // Bind the user to the company
         $user = $this->bindUserToCompany($user, $company);
 
+        // Load user's relations
+        $user->load(['company', 'outlet']);
+
         return $user;
     }
 
@@ -48,7 +52,7 @@ class RegistrationService
             'outlet_id' => null, // Null, since the user is the owner and can access multiple outlets
         ];
 
-        return app()->make(UserRepositoryInterface::class)->create($payload);
+        return app()->make(UserRepositoryInterface::class)->save($payload);
     }
 
     /**
@@ -67,7 +71,7 @@ class RegistrationService
             'is_active' => 1,
         ];
 
-        return app()->make(CompanyRepositoryInterface::class)->create($payload);
+        return app()->make(CompanyRepositoryInterface::class)->save($payload);
     }
 
     /**
@@ -75,9 +79,9 @@ class RegistrationService
      *
      * @param  \App\Models\Company $company
      * @param  array $data
-     * @return \App\Models\Company
+     * @return \App\Models\Outlet
      */
-    public function registerCompanyOutlet(Company $company, array $data): Company
+    public function registerCompanyOutlet(Company $company, array $data): Outlet
     {
         $payload = [
             'company_id' => $company->id,
@@ -86,7 +90,7 @@ class RegistrationService
             'phone' => $data['outlet_phone'],
         ];
 
-        return app()->make(OutletRepositoryInterface::class)->create($payload);
+        return app()->make(OutletRepositoryInterface::class)->save($payload);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\BaseModel;
 use App\Repositories\Interfaces\BaseResourceRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,9 +12,9 @@ class BaseResourceRepository implements BaseResourceRepositoryInterface
     /**
      * The model instance.
      *
-     * @var \App\Models\BaseModel
+     * @var \Illuminate\Database\Eloquent\Model
      */
-    protected BaseModel $model;
+    protected Model $model;
 
     /**
      * Get all resources.
