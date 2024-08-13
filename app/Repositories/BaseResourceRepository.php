@@ -61,11 +61,12 @@ class BaseResourceRepository implements BaseResourceRepositoryInterface
      * Get a resource by id.
      *
      * @param  int $id
+     * @param  array $relations
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function find(int $id): Model
+    public function find(int $id, array $relations = []): Model
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with($relations)->findOrFail($id);
     }
 
     /**

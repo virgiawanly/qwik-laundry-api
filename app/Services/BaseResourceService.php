@@ -58,18 +58,19 @@ class BaseResourceService
     /**
      * Get a resource by id.
      *
-     * @param int $id
+     * @param  int $id
+     * @param  array $relations
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function find(int $id): Model
+    public function find(int $id, array $relations = []): Model
     {
-        return $this->repository->find($id);
+        return $this->repository->find($id, $relations);
     }
 
     /**
      * Create a new resource.
      *
-     * @param array $payload
+     * @param  array $payload
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function save(array $payload): Model
@@ -80,8 +81,9 @@ class BaseResourceService
     /**
      * Update a resource.
      *
-     * @param int $id
-     * @param array $payload
+     * @param  int $id
+     * @param  array $payload
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function patch(int $id, array $payload): Model
     {
@@ -91,7 +93,7 @@ class BaseResourceService
     /**
      * Delete a resource.
      *
-     * @param int $id
+     * @param  int $id
      * @return bool
      */
     public function delete(int $id): bool
