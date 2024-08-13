@@ -11,12 +11,12 @@ class CompanyService extends BaseResourceService
     /**
      * Create a new service instance.
      *
-     * @param  \App\Repositories\Interfaces\CompanyRepositoryInterface  $repository
+     * @param  \App\Repositories\Interfaces\CompanyRepositoryInterface  $companyRepository
      * @return void
      */
-    public function __construct(protected CompanyRepositoryInterface $repository)
+    public function __construct(protected CompanyRepositoryInterface $companyRepository)
     {
-        parent::__construct($repository);
+        parent::__construct($companyRepository);
     }
 
     /**
