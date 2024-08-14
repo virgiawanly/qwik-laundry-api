@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserRole;
 use App\Models\Company;
 use App\Models\Outlet;
 use App\Models\User;
@@ -49,6 +50,7 @@ class RegistrationService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role' => UserRole::Admin->value,
             'outlet_id' => null, // Null, since the user is the owner and can access multiple outlets
         ];
 

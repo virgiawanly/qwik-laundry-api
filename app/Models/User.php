@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\UserRole;
 use App\Traits\DefaultActivityLogOptions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -67,5 +68,15 @@ class User extends Authenticatable
     public function outlet()
     {
         return $this->belongsTo(Outlet::class);
+    }
+
+    /**
+     * Get can access multiple outlets attribute.
+     *
+     * @return bool
+     */
+    public function getCanAccessMultipleOutletsAttribute()
+    {
+        return $this->role === UserRole::Admin->value;
     }
 }
