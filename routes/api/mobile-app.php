@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobileApp\Auth\GoogleAuthController;
 use App\Http\Controllers\MobileApp\Auth\LoginController;
 use App\Http\Controllers\MobileApp\Auth\RegistrationController;
 use App\Http\Controllers\MobileApp\Auth\UserController;
@@ -10,7 +11,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
-    Route::post('register', [RegistrationController::class, 'register']);
+
+    Route::prefix('google')->group(function () {
+        Route::post('authenticate', [GoogleAuthController::class, 'authenticate']);
+    });
+
+    Route::prefix('registration')->group(function () {
+        Route::post('validate-account', [RegistrationController::class, 'validateAccountRegistration']);
+        Route::post('register', [RegistrationController::class, 'register']);
+        Route::post('google', [RegistrationController::class, 'registerGoogle']);
+    });
 });
 
 Route::middleware('auth:sanctum')->group(function () {

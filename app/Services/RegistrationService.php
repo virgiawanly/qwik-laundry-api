@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Enums\UserRole;
+use App\Exceptions\ValidationException;
 use App\Models\Company;
 use App\Models\Outlet;
+use App\Models\RegistrationToken;
 use App\Models\User;
 use App\Repositories\Interfaces\CompanyRepositoryInterface;
 use App\Repositories\Interfaces\OutletRepositoryInterface;
@@ -16,9 +18,9 @@ class RegistrationService
      * Register new user, company and outlet.
      *
      * @param  array $data
-     * @return \App\Models\User
+     * @return array
      */
-    public function handleRegistration(array $data): User
+    public function handleRegistration(array $data): array
     {
         // Create a new user
         $user = $this->registerNewUser($data);
@@ -35,7 +37,13 @@ class RegistrationService
         // Load user's relations
         $user->load(['company', 'outlet']);
 
-        return $user;
+        // Create an access token
+        $token = $user->createToken('mobileAppToken')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
     }
 
     /**
@@ -108,5 +116,103 @@ class RegistrationService
         $user->save();
 
         return $user;
+    }
+
+    /**
+     * Get registration token.
+     *
+     * @param  string $token
+     * @return \App\Models\RegistrationToken
+     */
+    public function getRegistrationToken(string $token): RegistrationToken
+    {
+        return RegistrationToken::where('token', $token)
+            ->where('expired_at', '>=', now())
+            ->firstOrFail();
+    }
+
+    /**
+     * Handle registration using Google token.
+     *
+     * @param  array $data
+     * @return array
+     */
+    public function handleGoogleRegistration(array $data): array
+    {
+        // Find registration token to get the user's google id
+        $registrationToken = $this->getRegistrationToken($data['registration_token']);
+
+        // Create a new user
+        $user = $this->registerNewGoogleUser($registrationToken);
+
+        // Create a new company
+        $company = $this->registerUserCompany($user, $data);
+
+        // Create a new outlet for the company
+        $this->registerCompanyOutlet($company, $data);
+
+        // Bind the user to the company
+        $user = $this->bindUserToCompany($user, $company);
+
+        // Load user's relations
+        $user->load(['company', 'outlet']);
+
+        // Create an access token
+        $token = $user->createToken('mobileAppToken')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
+    }
+
+    /**
+     * Register a new user.
+     *
+     * @param  array $data
+     * @return \App\Models\User
+     */
+    public function registerNewGoogleUser(RegistrationToken $registrationToken): User
+    {
+        // Get token payload
+        $tokenPayload = json_decode($registrationToken->payload, true);
+
+        // Check token validity
+        if (
+            empty($registrationToken->email)
+            || empty($tokenPayload['google_id'])
+            || empty($tokenPayload['name'])
+        ) {
+            throw new ValidationException('Invalid token payload');
+        }
+
+        $payload = [
+            'email' => $registrationToken->email,
+            'name' => $tokenPayload['name'],
+            'google_id' => $tokenPayload['google_id'],
+            'external_image' => $tokenPayload['picture'] ?? null,
+            'role' => UserRole::Admin->value,
+            'password' => null, // No password for google users
+            'outlet_id' => null, // Null, since the user is the owner and can access multiple outlets
+        ];
+
+        return app()->make(UserRepositoryInterface::class)->save($payload);
+    }
+
+    /**
+     * Validate account registration.
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function validateAccountRegistration(array $data): bool
+    {
+        $emailExists = User::where('email', $data['email'])->exists();
+
+        if ($emailExists) {
+            throw new ValidationException('This email is already registered.');
+        }
+
+        return true;
     }
 }
