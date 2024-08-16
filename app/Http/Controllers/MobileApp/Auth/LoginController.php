@@ -48,7 +48,7 @@ class LoginController extends Controller
     {
         try {
             $request->user()->currentAccessToken()->delete();
-            return ResponseHelper::success('Logout successfully');
+            return ResponseHelper::success(trans('messages.logout_successful'));
         } catch (Exception $e) {
             return ResponseHelper::internalServerError($e->getMessage(), $e);
         }
