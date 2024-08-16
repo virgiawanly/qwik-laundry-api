@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobileApp\AddOn\AddOnController;
 use App\Http\Controllers\MobileApp\Auth\GoogleAuthController;
 use App\Http\Controllers\MobileApp\Auth\LoginController;
 use App\Http\Controllers\MobileApp\Auth\RegistrationController;
@@ -35,5 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('product-types', ProductTypeController::class);
 
         Route::apiResource('products', ProductController::class);
+
+        Route::apiResource('add-ons', AddOnController::class);
     });
 });

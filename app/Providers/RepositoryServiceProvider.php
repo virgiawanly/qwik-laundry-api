@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\AddOnRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\CustomerRepository;
+use App\Repositories\Interfaces\AddOnRepositoryInterface;
 use App\Repositories\Interfaces\CompanyRepositoryInterface;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Interfaces\OutletRepositoryInterface;
@@ -14,6 +16,7 @@ use App\Repositories\OutletRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTypeRepository;
 use App\Repositories\UserRepository;
+use App\Services\AddOnService;
 use App\Services\CompanyService;
 use App\Services\CustomerService;
 use App\Services\OutletService;
@@ -57,6 +60,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(ProductService::class, function ($app) {
             return new ProductService($app->make(ProductRepositoryInterface::class));
+        });
+
+        $this->app->bind(AddOnRepositoryInterface::class, AddOnRepository::class);
+        $this->app->bind(AddOnService::class, function ($app) {
+            return new AddOnService($app->make(AddOnRepositoryInterface::class));
         });
     }
 
