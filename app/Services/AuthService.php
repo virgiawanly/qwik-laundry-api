@@ -20,9 +20,14 @@ class AuthService
         // Find user
         $user = app()->make(UserRepositoryInterface::class)->findUserByEmail($data['email']);
 
+        // Make sure the user has set the password
+        if (empty($user->password)) {
+            throw new UnauthorizedException(trans('messages.invalid_email_or_password'));
+        }
+
         // Validate credentials
         if (empty($user) || !Hash::check($data['password'], $user->password)) {
-            throw new UnauthorizedException('Invalid email or password');
+            throw new UnauthorizedException(trans('messages.invalid_email_or_password'));
         }
 
         // Load user's relations
@@ -45,9 +50,14 @@ class AuthService
         // Find user
         $user = app()->make(UserRepositoryInterface::class)->findUserByEmail($data['email']);
 
+        // Make sure the user has set the password
+        if (empty($user->password)) {
+            throw new UnauthorizedException(trans('messages.invalid_email_or_password'));
+        }
+
         // Validate credentials
         if (empty($user) || !Hash::check($data['password'], $user->password)) {
-            throw new UnauthorizedException('Invalid email or password');
+            throw new UnauthorizedException(trans('messages.invalid_email_or_password'));
         }
 
         // Load user's relations

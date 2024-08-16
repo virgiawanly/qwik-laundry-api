@@ -32,7 +32,7 @@ class RegistrationController extends Controller
             DB::beginTransaction();
             $result = $this->registrationService->handleRegistration($request->validated());
             DB::commit();
-            return ResponseHelper::success('User created successfully', $result, 201);
+            return ResponseHelper::success(trans('messages.successfully_registered'), $result, 201);
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::internalServerError($e->getMessage(), $e);
@@ -51,7 +51,7 @@ class RegistrationController extends Controller
             DB::beginTransaction();
             $result = $this->registrationService->handleGoogleRegistration($request->validated());
             DB::commit();
-            return ResponseHelper::success('User created successfully', $result, 201);
+            return ResponseHelper::success(trans('messages.successfully_registered'), $result, 201);
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::internalServerError($e->getMessage(), $e);

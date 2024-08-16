@@ -23,7 +23,9 @@ class GoogleAuthService
 
         // Check if token is provided
         if (empty($idToken)) {
-            throw new UnauthorizedException('Token is required.');
+            throw new UnauthorizedException(config('app.debug')
+                ? trans('messages.token_is_required')
+                : trans('messages.sorry_bad_request'));
         }
 
         // Initialize the Google client
@@ -34,7 +36,9 @@ class GoogleAuthService
 
         // Check if token is valid
         if (empty($tokenPayload)) {
-            throw new UnauthorizedException('Invalid ID token.');
+            throw new UnauthorizedException(config('app.debug')
+                ? trans('messages.invalid_google_token')
+                : trans('messages.sorry_bad_request'));
         }
 
         // Check if the user already exists

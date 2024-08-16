@@ -183,7 +183,9 @@ class RegistrationService
             || empty($tokenPayload['google_id'])
             || empty($tokenPayload['name'])
         ) {
-            throw new ValidationException('Invalid token payload');
+            throw new ValidationException(config('app.debug')
+                ? trans('messages.invalid_google_token')
+                : trans('messages.sorry_bad_request'));
         }
 
         $payload = [
@@ -210,7 +212,7 @@ class RegistrationService
         $emailExists = User::where('email', $data['email'])->exists();
 
         if ($emailExists) {
-            throw new ValidationException('This email is already registered.');
+            throw new ValidationException(trans('messages.email_already_registered'));
         }
 
         return true;
